@@ -45,6 +45,7 @@ body {
 .search-form > button:hover,
 .search-form > button:focus, .btn:hover, .btn:focus{
   color: rgb(76, 204, 161);
+  /* color: #4ccca1; */
   background-color: rgb(253, 253, 253);
 }
 

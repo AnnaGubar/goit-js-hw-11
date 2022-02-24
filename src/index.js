@@ -3,11 +3,32 @@ import imgCardTpl from './templates/img-card.hbs';
 import { getPictures } from './js/imgApi';
 import { makeLightbox } from './js/ligthbox';
 import './css/styles.css';
+
+Notify.init({
+  width: '430px',
+  fontSize: '20px',
+  clickToClose: true,
+  borderRadius: '10px',
+
+  info: {
+    background: 'rgba(253, 253, 253,0.8)',
+    textColor: '#472222',
+    childClassName: 'notiflix-notify-info',
+    notiflixIconColor: '#4ccca1',
+    fontAwesomeClassName: 'fas fa-info-circle',
+    fontAwesomeIconColor: 'rgba(0,0,0,0.2)',
+  },
+});
+
+
 const formRef = document.querySelector('#search-form');
 const galleryRef = document.querySelector('.gallery');
 const btnLoadMoreRef = document.querySelector('.btn');
+
 let page = 1;
 let inputValue = '';
+
+
 
 formRef.addEventListener('submit', searchHandler);
 btnLoadMoreRef.addEventListener('click', loadMoreHandler);
