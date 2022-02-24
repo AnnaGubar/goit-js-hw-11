@@ -43,6 +43,7 @@ function searchHandler(e) {
 
   getPictures(inputValue, page).then(img => {
     if (!img.totalHits) {
+      btnLoadMoreRef.classList.add('is-hidden');
       Notify.failure('Sorry, there are no images matching your search query. Please try again.');
       return;
     }
