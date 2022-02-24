@@ -18,8 +18,10 @@ Notify.init({
     fontAwesomeClassName: 'fas fa-info-circle',
     fontAwesomeIconColor: 'rgba(0,0,0,0.2)',
   },
+  failure: {
+    background: 'rgba(255, 85, 73,0.8)',
+  },
 });
-
 
 const formRef = document.querySelector('#search-form');
 const galleryRef = document.querySelector('.gallery');
@@ -27,8 +29,6 @@ const btnLoadMoreRef = document.querySelector('.btn');
 
 let page = 1;
 let inputValue = '';
-
-
 
 formRef.addEventListener('submit', searchHandler);
 btnLoadMoreRef.addEventListener('click', loadMoreHandler);
@@ -42,7 +42,7 @@ function searchHandler(e) {
 
   getPictures(inputValue, page).then(img => {
     if (!img.totalHits) {
-      Notify.info('Sorry, there are no images matching your search query. Please try again.');
+      Notify.failure('Sorry, there are no images matching your search query. Please try again.');
       return;
     }
     if (!inputValue) {
