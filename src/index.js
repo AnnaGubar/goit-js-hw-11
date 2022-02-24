@@ -19,9 +19,9 @@ function searchHandler(e) {
 
   inputValue = e.currentTarget.searchQuery.value;
   page = 1;
-  // console.log(page);
 
-    getPictures(inputValue, page).then(img => {
+  getPictures(inputValue, page).then(img => {
+      
       if (!img.totalHits) {
         Notify.info('Sorry, there are no images matching your search query. Please try again.');
         return;
@@ -31,9 +31,10 @@ function searchHandler(e) {
         return;
       }
 
+    Notify.info(`Hooray! We found ${img.hits.length} images.`);
+
       galleryRef.innerHTML = imgCardTpl(img.hits);
 
-      // console.log(img.hits.length); 
       if (img.hits.length === 40) {
         btnLoadMoreRef.classList.remove('is-hidden');
       }
@@ -41,12 +42,7 @@ function searchHandler(e) {
 }
 
 function loadMoreHandler() {
-  // inputValue = formRef.searchQuery.value;
-// console.log(page);
-  
   page += 1;
-
-  // console.log(page);
 
   getPictures(inputValue, page)
     .then(img => {
