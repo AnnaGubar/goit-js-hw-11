@@ -1,10 +1,8 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import imgCardTpl from './templates/img-card.hbs';
 import { getPictures } from './js/imgApi';
-import {makeLightbox} from './js/ligthbox'
+import { makeLightbox } from './js/ligthbox';
 import './css/styles.css';
-;
-
 const formRef = document.querySelector('#search-form');
 const galleryRef = document.querySelector('.gallery');
 const btnLoadMoreRef = document.querySelector('.btn');
@@ -54,7 +52,11 @@ function loadMoreHandler() {
       if (img.hits.length < 40) {
         btnLoadMoreRef.classList.add('is-hidden');
       }
+
+      if (page === 13) {
+        Notify.info("We're sorry, but you've reached the end of search results.");
+        btnLoadMoreRef.classList.add('is-hidden');
+      }
     })
     .catch(error => console.log(error));
 }
-
