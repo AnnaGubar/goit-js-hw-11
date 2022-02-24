@@ -18,6 +18,7 @@ Notify.init({
     fontAwesomeClassName: 'fas fa-info-circle',
     fontAwesomeIconColor: 'rgba(0,0,0,0.2)',
   },
+
   failure: {
     background: 'rgba(255, 85, 73,0.8)',
   },
