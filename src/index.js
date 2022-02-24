@@ -1,28 +1,27 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import imgCardTpl from './templates/img-card.hbs';
+import { getPictures } from './js/imgApi'
 import './css/styles.css';
-
-let page = 1;
-const BASE_URL = 'https://pixabay.com/api/';
-const apiKey = '25849699-edc9a69ae2fd4562ebcb7ccdf';
-const searchSettings = `image_type=photo&orientation=horizontal&safesearch=true&per_page=40`;
 
 const formRef = document.querySelector('#search-form');
 const galleryRef = document.querySelector('.gallery');
 const btnLoadMoreRef = document.querySelector('.btn');
+let page = 1;
+let inputValue = ''
+
 
 formRef.addEventListener('submit', searchHandler);
 btnLoadMoreRef.addEventListener('click', loadMoreHandler);
 
 function searchHandler(e) {
   e.preventDefault();
+  galleryRef.innerHTML = '';
 
-  let inputValue = e.currentTarget.searchQuery.value;
+  inputValue = e.currentTarget.searchQuery.value;
+  page = 1;
+  // console.log(page);
 
-  fetch(`${BASE_URL}?key=${apiKey}&q=${inputValue}&${searchSettings}&page=${page}`)
-    // fetch(`${BASE_URL}?key=${apiKey}&q=cat&${searchSettings}`)
-    .then(res => res.json())
-    .then(img => {
+    getPictures(inputValue, page).then(img => {
       if (!img.totalHits) {
         Notify.info('Sorry, there are no images matching your search query. Please try again.');
         return;
@@ -31,32 +30,34 @@ function searchHandler(e) {
         Notify.info('You need to enter something for the search.');
         return;
       }
+
       galleryRef.innerHTML = imgCardTpl(img.hits);
-      btnLoadMoreRef.classList.remove('is-hidden');
+
+      // console.log(img.hits.length); 
+      if (img.hits.length === 40) {
+        btnLoadMoreRef.classList.remove('is-hidden');
+      }
     });
+}
+
+function loadMoreHandler() {
+  // inputValue = formRef.searchQuery.value;
+// console.log(page);
   
-  // console.log('⭐ ~ inputValue', inputValue);
-  // loadMoreHandler(e,inputValue);
-}
+  page += 1;
 
+  // console.log(page);
 
-function loadMoreHandler(e, xxx) {
-  e.preventDefault();
-  // let inputValue = e.currentTarget.searchQuery.value;
-  const x = xxx;
-  // console.log('⭐ ~ inputValue', inputValue);
-  // console.log("⭐ ~ x", x)
-  // page += 1
-  fetch(`${BASE_URL}?key=${apiKey}&q=${x}&${searchSettings}&page=2`)
-    // fetch(`${BASE_URL}?key=${apiKey}&q=cat&${searchSettings}`)
-    .then(res => res.json())
+  getPictures(inputValue, page)
     .then(img => {
-      console.log(img);
-      galleryRef.innerHTML = imgCardTpl(img.hits)
-    })
-    
-};
+      galleryRef.insertAdjacentHTML("beforeend", imgCardTpl(img.hits));
+      
+      console.log(img.hits.length);
 
-function renderImgCards(img) {
-  galleryRef.innerHTML = imgCardTpl(img.hits);
+      if (img.hits.length < 40) {
+      btnLoadMoreRef.classList.add('is-hidden');
+      }
+    })
+    .catch(error=>console.log(error));
 }
+
